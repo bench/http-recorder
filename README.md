@@ -6,7 +6,7 @@ It provides :
 * an `HTTP endpoint` that accepts any kind of requests on any path, any method, any headers and any payload
 * an `API` to retrieved stored requests using a specific quey syntax (see above).
 
-![beta](http://leitorcabuloso.com.br/wp-content/uploads/2013/01/beta.jpg 200px)
+<img src="http://www.ucd.ie/building/resource/buttons/beta.gif" alt="beta" style="width: 200px;align:center;"/>
 
 ## Usage
 
@@ -24,6 +24,12 @@ Run http-recorder
      ./http-recorder -monitoredPort 12345 -retrieverPort 23456
 
 Start testing !
+
+## Query syntax
+
+*host:23456?containspath=youyou
+
+TO COMPLETE
 
 ## Contributing
 
