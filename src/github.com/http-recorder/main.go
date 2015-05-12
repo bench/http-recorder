@@ -1,48 +1,53 @@
 package main
 
 import (
-	"encoding/json"
+	"flag"
 	"fmt"
-	"github.com/http-recorder/entities"
-	"github.com/http-recorder/inmemory"
-	"net/http"
+	nethttp "net/http"
+	"os"
+	"os/signal"
+
+	"github.com/http-recorder/fifo"
+	"github.com/http-recorder/http"
 )
 
-const (
-	RequestsBufferSize = 100
-	RecorderServerPort = ":12345"
-	ClientsServerPort  = ":23456"
-)
+var recorderPort string
+var retrieverPort string
 
+/*
+ * Usage :
+ * ./http-recorder -recorderPort 10254 -monitorPort 5494
+ * Default values are
+ *    - recorderPort 12345
+ *    - monitorPort  23456
+ */
 func main() {
-	fmt.Println("Starting http recorder...")
-	inmemory.Init()
-	go http.ListenAndServe(RecorderServerPort, http.HandlerFunc(RecorderListener))
-	http.ListenAndServe(ClientsServerPort, http.HandlerFunc(RequestProviderListener))
 
+	fmt.Println(" _     _   _                                      _           \n" +
+		"| |   | | | |                                    | |          \n" +
+		"| |__ | |_| |_ _ __    _ __ ___  ___ ___  _ __ __| | ___ _ __ \n" +
+		"| '_ \\| __| __| '_ \\  | '__/ _ \\/ __/ _ \\| '__/ _` |/ _ \\ '__|\n" +
+		"| | | | |_| |_| |_) | | | |  __/ (_| (_) | | | (_| |  __/ |   \n" +
+		"|_| |_|\\__|\\__| .__/  |_|  \\___|\\___\\___/|_|  \\__,_|\\___|_|   \n" +
+		"              | |                                             \n" +
+		"              |_|                                             ")
+
+	fmt.Println("starting http recorder...")
+	flag.StringVar(&recorderPort, "recorderPort", "12345", "Port on which requests are catched and stored")
+	flag.StringVar(&retrieverPort, "retrieverPort", "23456", "Port on which requests can be retrieved")
+	fifo.Init()
+	go nethttp.ListenAndServe(fmt.Sprint(":", recorderPort), nethttp.HandlerFunc(http.RecorderHandler))
+	go nethttp.ListenAndServe(fmt.Sprint(":", retrieverPort), nethttp.HandlerFunc(http.RetrieverHandler))
+
+	fmt.Println("-------> Recorder is listening on port", recorderPort)
+	fmt.Println("-------> Retriever is listening on port", retrieverPort)
+
+	waitForStop()
 }
 
-func RecorderListener(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Received new request to record from", r.RemoteAddr)
-	hr, err := entities.BuildHttpRequest(r)
-	if err != nil {
-		fmt.Println("Unable to process incoming request due to ", err)
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	inmemory.PersistRequest(hr)
-	bytes, _ := json.Marshal(hr)
-	fmt.Println("Request stored :", string(bytes))
-}
-
-func RequestProviderListener(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("New client connects from", r.RemoteAddr)
-	incomingRequests.Peek()
-	json.NewEncoder(w).Encode(<-incomingRequests)
-	w.WriteHeader(http.StatusOK)
-}
-
-func onEvictedRequest(value interface{}) {
-	// FILL IT WITH YOUR NEED
-	fmt.Println("Memory is full, remove oldest stored http request : ", value.(entities.HttpRequest))
+func waitForStop() {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, os.Kill)
+	s := <-c
+	fmt.Println("interrup signal received (" + s.String() + "), shutting down server")
 }
