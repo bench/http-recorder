@@ -1,3 +1,5 @@
+<img src="http://www.ucd.ie/building/resource/buttons/beta.gif" alt="beta" style="width: 150px;align:center;"/>
+
 # Http-recorder
 
 Http-recorder can be used for transparently recording all requests sent by a system via [HTTP](http://tools.ietf.org/html/).
@@ -6,7 +8,6 @@ It provides :
 * an `HTTP endpoint` that accepts any kind of requests on any path, any method, any headers and any payload
 * an `API` to retrieved stored requests using a specific quey syntax (see above).
 
-<img src="http://www.ucd.ie/building/resource/buttons/beta.gif" alt="beta" style="width: 200px;align:center;"/>
 
 ## Usage
 
