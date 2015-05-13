@@ -12,7 +12,7 @@ It is made of :
 
 Send any HTTP request on Http-recorder
 
-![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613711/a88451b4-f992-11e4-8043-f58fa74c4c73.png "any request")
+![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613711/a88451b4-f992-11e4-8043-f58fa74c4c73.png "any request" 300px)
 
 Query Http-recorder to retrieve stored request(s)
 
