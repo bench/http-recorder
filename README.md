@@ -12,11 +12,11 @@ It is made of :
 
 Send any HTTP request on Http-recorder
 
-![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613365/8ddbf5e4-f990-11e4-943c-8d0ac153c6d3.png "any request")
+![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613711/a88451b4-f992-11e4-8043-f58fa74c4c73.png "any request")
 
 Query Http-recorder to retrieve stored request(s)
 
-![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613422/eb10c0aa-f990-11e4-9f14-5774e0e144ed.png "query request")
+![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613728/bc818812-f992-11e4-9e57-5190d38dc2a6.png "query request")
 
 
 ## Query syntax
