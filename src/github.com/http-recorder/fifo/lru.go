@@ -52,7 +52,10 @@ func (c *Cache) add(value interface{}) bool {
 	evict := c.evictList.Len() > c.size
 	// Verify size not exceeded
 	if evict {
-		c.removeOldest()
+		evicted := c.removeOldest()
+		if evicted != nil && c.onEvicted != nil {
+			c.onEvicted(evicted.Value)
+		}
 	}
 	return evict
 }
@@ -94,7 +97,4 @@ func (c *Cache) removeOldest() *list.Element {
 // removeElement is used to remove a given list element from the fifo
 func (c *Cache) removeElement(e *list.Element) {
 	c.evictList.Remove(e)
-	if c.onEvicted != nil {
-		c.onEvicted(e.Value)
-	}
 }

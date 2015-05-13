@@ -9,14 +9,14 @@ import (
 )
 
 func RecorderHandler(w nethttp.ResponseWriter, r *nethttp.Request) {
-	fmt.Println("(!) New request received from", r.RemoteAddr)
+	fmt.Println("[HTTP-RECORDER] (!) New request received from", r.RemoteAddr)
 	hr, err := entities.BuildHttpRequest(r)
 	if err != nil {
-		fmt.Println("Unable to process incoming request due to ", err)
+		fmt.Println("[HTTP-RECORDER] Unable to process incoming request due to ", err)
 		w.WriteHeader(nethttp.StatusBadRequest)
 		return
 	}
 	fifo.PersistRequest(hr)
 	bytes, _ := json.Marshal(hr)
-	fmt.Println("Request stored in memory :", string(bytes))
+	fmt.Println("[HTTP-RECORDER] Following stored with success :", string(bytes))
 }

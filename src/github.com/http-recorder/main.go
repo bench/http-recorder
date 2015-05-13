@@ -30,7 +30,7 @@ func main() {
 		"| | | | |_| |_| |_) | | | |  __/ (_| (_) | | | (_| |  __/ |   \n" +
 		"|_| |_|\\__|\\__| .__/  |_|  \\___|\\___\\___/|_|  \\__,_|\\___|_|   \n" +
 		"              | |                                             \n" +
-		"              |_|                                             ")
+		"              |_|                                             \n")
 
 	fmt.Println("starting http recorder...")
 	flag.StringVar(&recorderPort, "recorderPort", "12345", "Port on which requests are catched and stored")
@@ -39,8 +39,8 @@ func main() {
 	go nethttp.ListenAndServe(fmt.Sprint(":", recorderPort), nethttp.HandlerFunc(http.RecorderHandler))
 	go nethttp.ListenAndServe(fmt.Sprint(":", retrieverPort), nethttp.HandlerFunc(http.RetrieverHandler))
 
-	fmt.Println("-------> Recorder is listening on port", recorderPort)
-	fmt.Println("-------> Retriever is listening on port", retrieverPort)
+	fmt.Println("[HTTP-RECORDER] Recorder is listening on port", recorderPort)
+	fmt.Println("[HTTP-RETRIEVER] Retriever is listening on port", retrieverPort)
 
 	waitForStop()
 }

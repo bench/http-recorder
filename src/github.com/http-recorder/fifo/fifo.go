@@ -12,19 +12,16 @@ const (
 var requestFifo *Cache
 
 func Init() {
-	if onEvicted != nil {
-		requestFifo = newWithOnEvicted(RequestFifoSize, onEvicted)
-	}
-	requestFifo = new(RequestFifoSize)
+	requestFifo = newWithOnEvicted(RequestFifoSize, onEvicted)
 }
 
 func onEvicted(value interface{}) {
-	fmt.Println("memory is full, delete the following http request : ", value.(entities.HttpRequest))
+	fmt.Println("[HTTP-RECORDER] memory is full, delete the following http request : ", value.(*entities.HttpRequest))
 }
 
 func PersistRequest(hr *entities.HttpRequest) error {
 	if requestFifo == nil {
-		return fmt.Errorf("request list not initialized")
+		return fmt.Errorf("[HTTP-RECORDER] request list not initialized")
 	}
 	requestFifo.add(hr)
 	return nil
@@ -33,7 +30,7 @@ func PersistRequest(hr *entities.HttpRequest) error {
 func GetOldest() (*entities.HttpRequest, error) {
 	oldestEntity := requestFifo.removeOldest()
 	if oldestEntity == nil {
-		return &entities.HttpRequest{}, fmt.Errorf("Queue is empty, noting to return")
+		return &entities.HttpRequest{}, fmt.Errorf("[HTTP-RETRIEVER] Queue is empty, nothing to return")
 	}
 	return oldestEntity.Value.(*entities.HttpRequest), nil
 }

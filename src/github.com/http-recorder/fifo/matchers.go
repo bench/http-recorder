@@ -19,8 +19,8 @@ func (f MatcherFunc) MatchesCond(hr *entities.HttpRequest, cond interface{}) boo
 	return f(hr, cond)
 }
 
-// searchRequestInFifo is a generic research function.
-// It returns the first request that matches rule defined by requestMatcher and cond
+// Generic research function. It returns the first request that
+// matches rule defined by requestMatcher and condition
 func searchRequestInFifo(requestMatcher RequestMatcher, cond interface{}) (*entities.HttpRequest, error) {
 	elements := requestFifo.getElements()
 	for _, element := range elements {
