@@ -2,15 +2,29 @@
 
 # Http-recorder
 
-Http-recorder can be used for transparently recording all requests sent by a system via [HTTP](http://tools.ietf.org/html/).
+Http-recorder can be used for transparently recording all requests sent by any system via [HTTP](http://tools.ietf.org/html/).
 
-It provides :
-* an `HTTP endpoint` that accepts any kind of requests on any path, any method, any headers and any payload
-* an `API` to retrieved stored requests using a specific quey syntax (see above).
-
-Http requests are stored in a FIFO implemented in an LRU way.
+It is made of :
+* An `HTTP endpoint` that accepts any kind of HTTP requests
+* A `API` to retrieve stored requests using a specific query syntax (see above).
 
 ## Usage
+
+Send any HTTP request on Http-recorder
+
+![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613365/8ddbf5e4-f990-11e4-943c-8d0ac153c6d3.png "any request")
+
+Query Http-recorder to retrieve stored request(s)
+
+![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613422/eb10c0aa-f990-11e4-9f14-5774e0e144ed.png "query request")
+
+
+## Query syntax
+
+#### containspath=teddy
+Return a request in FIFO whose path contains teddy
+
+## Install
 
 Clone project
 
@@ -23,19 +37,31 @@ Build project
 
 Run http-recorder
 
-     bin/http-recorder -monitorePort 12345 -retrieverPort 23456
+     bin/http-recorder -recorderPort 12345 -retrieverPort 23456
+
+
+![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613417/e5d9c12c-f990-11e4-81ac-168327735bef.png "http-recorder")
+
 
 Start testing !
 
-## Query syntax
 
-*host:23456?containspath=youyou : return the 
+## Under the hood
 
-TO COMPLETE
+Http requests are stored in a FIFO implemented in an LRU way, to prevent uncontrolled memory increase.
+
+REST API supports `long polling HTTP` pattern, as proposed by [IETF](https://tools.ietf.org/id/draft-thomson-hybi-http-timeout-00.xml), using Request-Timeout header.
+
+### Roadmap
+* Support more complete query syntax
+* Provide HTML visualization of stored requests
+* Adapt API to make it restful
+* Support binary request and store base64 encoded body
+
 
 ## Contributing
 
-The project is developed in [Go](http://golang.org/).
+The project is developed in [Golang](http://golang.org/).
 
 See the [Golang documentation](https://golang.org/doc/) for more information about the language.
 

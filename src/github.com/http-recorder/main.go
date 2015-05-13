@@ -16,10 +16,10 @@ var retrieverPort string
 
 /*
  * Usage :
- * ./http-recorder -recorderPort 10254 -monitorPort 5494
+ * ./http-recorder -recorderPort XXXXX -retrieverPort XXXXX
  * Default values are
  *    - recorderPort 12345
- *    - monitorPort  23456
+ *    - retrieverPort  23456
  */
 func main() {
 

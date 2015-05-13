@@ -15,6 +15,7 @@ type HttpRequest struct {
 
 func BuildHttpRequest(r *http.Request) (*HttpRequest, error) {
 	bytes, err := ioutil.ReadAll(r.Body)
+	defer r.Body.Close()
 	if err != nil {
 		return nil, fmt.Errorf("Http body unreadable")
 	}
