@@ -22,7 +22,7 @@ func RetrieverHandler(w nethttp.ResponseWriter, r *nethttp.Request) {
 	stopChan := make(chan bool)
 	go func() {
 
-		cond := r.URL.Query().Get("pathContains")
+		cond := r.URL.Query().Get("pathcontains")
 		if "" != cond { // Search by path
 			fmt.Println("[HTTP-RETRIEVER] client asks for a request whose path contains", cond)
 			request, err := fifo.FindByPath(cond)

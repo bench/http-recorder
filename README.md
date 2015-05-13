@@ -21,8 +21,10 @@ Query Http-recorder to retrieve stored request(s)
 
 ## Query syntax
 
-#### containspath=teddy
-Return a request in FIFO whose path contains teddy
+#### pathcontains
+Return a request in FIFO whose path contains value
+
+    http://hostname:23456?pathcontains=banana
 
 ## Install
 
