@@ -21,10 +21,29 @@ Query Http-recorder to retrieve stored request(s)
 
 ## Query syntax
 
+
 #### pathcontains
-Return a request in FIFO whose path contains value
+Return the oldest request whose path contains 'banana'
 
     http://hostname:23456?pathcontains=banana
+
+#### bodycontains
+Return the oldest request whose body contains 'store'
+
+    http://hostname:23456?pathcontains=store
+
+#### contenttype
+Return the oldest request whose content type header is 'text/plain'
+
+    http://hostname:23456?contenttype=text%2Fplain
+
+#### method
+Return the oldest request whose method is 'PUT'
+
+    http://hostname:23456?method=put
+
+
+NB : Query syntax ignores case.	
 
 ## Install
 

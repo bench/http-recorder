@@ -17,21 +17,29 @@ func RetrieverHandler(w nethttp.ResponseWriter, r *nethttp.Request) {
 	if headerNotAvailableOrMalformed != nil {
 		awaitingTime = 3
 	}
-
 	awaitingChan := make(chan *entities.HttpRequest)
 	stopChan := make(chan bool)
 	go func() {
+		if len(r.URL.Query()) != 0 { // Search by path
+			fmt.Println("[HTTP-RETRIEVER] client asks for a specific request", r.URL.Query())
 
-		cond := r.URL.Query().Get("pathcontains")
-		if "" != cond { // Search by path
-			fmt.Println("[HTTP-RETRIEVER] client asks for a request whose path contains", cond)
-			request, err := fifo.FindByPath(cond)
+			var request *entities.HttpRequest
+			var err error
+
+			for key, value := range r.URL.Query() {
+				request, err = fifo.FindBy(key, value[0])
+				break
+			}
+			// Handle long polling
 			for err != nil {
 				select {
 				case <-stopChan:
 					return
 				default:
-					request, err = fifo.FindByPath(cond)
+					for key, value := range r.URL.Query() {
+						request, err = fifo.FindBy(key, value[0])
+						break
+					}
 					time.Sleep(1 * time.Second)
 				}
 			}

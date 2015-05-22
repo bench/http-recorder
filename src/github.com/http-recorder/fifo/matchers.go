@@ -6,6 +6,61 @@ import (
 	"strings"
 )
 
+/**** List of matchers : Feel free to create your owns ****/
+
+func pathContains(hr *entities.HttpRequest, cond interface{}) bool {
+	if strings.Contains(hr.Path, cond.(string)) {
+		return true
+	}
+	return false
+}
+
+func bodyContains(hr *entities.HttpRequest, cond interface{}) bool {
+	if strings.Contains(hr.Body, cond.(string)) {
+		return true
+	}
+	return false
+}
+
+func isMethod(hr *entities.HttpRequest, cond interface{}) bool {
+	if cond.(string) == hr.Method {
+		return true
+	}
+	return false
+}
+
+func isContentType(hr *entities.HttpRequest, cond interface{}) bool {
+	if cond.(string) == hr.Headers["Content-Type"][0] {
+		return true
+	}
+	return false
+}
+
+/* Internal mechanisms */
+
+func FindBy(key string, value string) (*entities.HttpRequest, error) {
+
+	var matcher MatcherFunc
+
+	key = strings.ToLower(key)
+	value = strings.ToLower(value)
+
+	switch key {
+	case "pathcontains":
+		matcher = pathContains
+	case "bodycontains":
+		matcher = bodyContains
+	case "method":
+		matcher = isMethod
+	case "contenttype":
+		matcher = isContentType
+	default:
+		return nil, fmt.Errorf("Unsupported query:", key)
+	}
+
+	return searchRequestInFifo(MatcherFunc(matcher), value)
+}
+
 type RequestMatcher interface {
 	MatchesCond(*entities.HttpRequest, interface{}) bool
 }
@@ -30,27 +85,4 @@ func searchRequestInFifo(requestMatcher RequestMatcher, cond interface{}) (*enti
 		}
 	}
 	return &entities.HttpRequest{}, fmt.Errorf("No request matching")
-}
-
-/**** Note : Feel free to create your own matchers ****/
-
-func containsPathMatcher(hr *entities.HttpRequest, cond interface{}) bool {
-	if strings.Contains(hr.Path, cond.(string)) {
-		return true
-	}
-	return false
-}
-
-func containsBodyMatcher(hr *entities.HttpRequest, cond interface{}) bool {
-	if strings.Contains(hr.Body, cond.(string)) {
-		return true
-	}
-	return false
-}
-
-func MethodMatcher(hr *entities.HttpRequest, cond interface{}) bool {
-	if strings.TrimSpace(cond.(string)) == hr.Method {
-		return true
-	}
-	return false
 }

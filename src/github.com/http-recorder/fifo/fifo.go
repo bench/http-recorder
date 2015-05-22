@@ -34,7 +34,3 @@ func GetOldest() (*entities.HttpRequest, error) {
 	}
 	return oldestEntity.Value.(*entities.HttpRequest), nil
 }
-
-func FindByPath(pattern string) (*entities.HttpRequest, error) {
-	return searchRequestInFifo(MatcherFunc(containsPathMatcher), pattern)
-}
