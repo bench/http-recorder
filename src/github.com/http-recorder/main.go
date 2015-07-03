@@ -35,6 +35,7 @@ func main() {
 	fmt.Println("starting http recorder...")
 	flag.StringVar(&recorderPort, "recorderPort", "12345", "Port on which requests are catched and stored")
 	flag.StringVar(&retrieverPort, "retrieverPort", "23456", "Port on which requests can be retrieved")
+	flag.Parse()
 	fifo.Init()
 	go nethttp.ListenAndServe(fmt.Sprint(":", recorderPort), nethttp.HandlerFunc(http.RecorderHandler))
 	go nethttp.ListenAndServe(fmt.Sprint(":", retrieverPort), nethttp.HandlerFunc(http.RetrieverHandler))
