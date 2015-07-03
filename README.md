@@ -14,11 +14,11 @@ Start recorder
 
      ./http-recorder -recorderPort 80 -retrieverPort 8080
 
-Send any HTTP request on Http-recorder
+Send any kinf of HTTP request on recorder port
 
 ![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613711/a88451b4-f992-11e4-8043-f58fa74c4c73.png "any request")
 
-Query Http-recorder to retrieve stored request(s)
+Pop stored request(s) by querying them on retriever port, so simple !
 
 ![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613728/bc818812-f992-11e4-9e57-5190d38dc2a6.png "query request")
 
@@ -49,7 +49,7 @@ Return the oldest request whose method is 'PUT'
 
 NB : Query syntax ignores case.	
 
-## Install
+## Build and install
 
 Clone project
 
