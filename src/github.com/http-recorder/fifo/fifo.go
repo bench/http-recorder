@@ -3,6 +3,7 @@ package fifo
 import (
 	"fmt"
 	"github.com/http-recorder/entities"
+	"github.com/http-recorder/log"
 )
 
 const (
@@ -16,7 +17,7 @@ func Init() {
 }
 
 func onEvicted(value interface{}) {
-	fmt.Println("[HTTP-RECORDER] memory is full, delete the following http request : ", value.(*entities.HttpRequest))
+	log.RecorderInfo("memory is full, delete the following http request : ", value.(*entities.HttpRequest))
 }
 
 func PersistRequest(hr *entities.HttpRequest) error {

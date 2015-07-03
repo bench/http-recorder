@@ -2,16 +2,16 @@ package http
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/http-recorder/entities"
 	"github.com/http-recorder/fifo"
+	"github.com/http-recorder/log"
 	nethttp "net/http"
 	"strconv"
 	"time"
 )
 
 func RetrieverHandler(w nethttp.ResponseWriter, r *nethttp.Request) {
-	fmt.Println("[HTTP-RETRIEVER] (!) new client connection from", r.RemoteAddr)
+	log.RetrieverInfo("(!) new client connection from", r.RemoteAddr)
 
 	awaitingTime, headerNotAvailableOrMalformed := strconv.Atoi(r.Header.Get("Request-Timeout"))
 	if headerNotAvailableOrMalformed != nil {
@@ -21,7 +21,7 @@ func RetrieverHandler(w nethttp.ResponseWriter, r *nethttp.Request) {
 	stopChan := make(chan bool)
 	go func() {
 		if len(r.URL.Query()) != 0 { // Search by path
-			fmt.Println("[HTTP-RETRIEVER] client asks for a specific request", r.URL.Query())
+			log.RetrieverInfo("client asks for a specific request", r.URL.Query())
 
 			var request *entities.HttpRequest
 			var err error
@@ -45,7 +45,7 @@ func RetrieverHandler(w nethttp.ResponseWriter, r *nethttp.Request) {
 			}
 			awaitingChan <- request
 		} else { // No search
-			fmt.Println("[HTTP-RETRIEVER] client asks for any type of request")
+			log.RetrieverInfo("client asks for any type of request")
 			request, err := fifo.GetOldest()
 			for err != nil {
 				select {
@@ -62,11 +62,11 @@ func RetrieverHandler(w nethttp.ResponseWriter, r *nethttp.Request) {
 
 	select {
 	case <-time.After(time.Second * time.Duration(awaitingTime)):
-		fmt.Println("[HTTP-RETRIEVER] sorry timeout reached, query returned no result, goodbye")
+		log.RetrieverInfo("sorry timeout reached, query returned no result, goodbye")
 		w.WriteHeader(nethttp.StatusNotFound)
 		stopChan <- true
 	case request := <-awaitingChan:
-		fmt.Println("[HTTP-RETRIEVER] return following request to client", request)
+		log.RetrieverInfo("return following request to client", request)
 		json.NewEncoder(w).Encode(request)
 	}
 

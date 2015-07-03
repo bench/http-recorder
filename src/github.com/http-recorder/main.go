@@ -9,6 +9,7 @@ import (
 
 	"github.com/http-recorder/fifo"
 	"github.com/http-recorder/http"
+	"github.com/http-recorder/log"
 )
 
 var recorderPort string
@@ -40,8 +41,8 @@ func main() {
 	go nethttp.ListenAndServe(fmt.Sprint(":", recorderPort), nethttp.HandlerFunc(http.RecorderHandler))
 	go nethttp.ListenAndServe(fmt.Sprint(":", retrieverPort), nethttp.HandlerFunc(http.RetrieverHandler))
 
-	fmt.Println("[HTTP-RECORDER] Recorder is listening on port", recorderPort)
-	fmt.Println("[HTTP-RETRIEVER] Retriever is listening on port", retrieverPort)
+	log.RecorderInfo("Recorder is listening on port", recorderPort)
+	log.RetrieverInfo("Retriever is listening on port", retrieverPort)
 
 	waitForStop()
 }
