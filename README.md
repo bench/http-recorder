@@ -10,11 +10,15 @@ It is made of :
 
 ## Usage
 
-Send any HTTP request on Http-recorder
+Start recorder
+
+     ./http-recorder -recorderPort 80 -retrieverPort 8080
+
+Send any kinf of HTTP request on recorder port
 
 ![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613711/a88451b4-f992-11e4-8043-f58fa74c4c73.png "any request")
 
-Query Http-recorder to retrieve stored request(s)
+Pop stored request(s) by querying them on retriever port, so simple !
 
 ![Alt text](https://cloud.githubusercontent.com/assets/3688186/7613728/bc818812-f992-11e4-9e57-5190d38dc2a6.png "query request")
 
@@ -22,22 +26,22 @@ Query Http-recorder to retrieve stored request(s)
 ## Query syntax
 
 
-#### pathcontains
+#### by pathcontains
 Return the oldest request whose path contains 'banana'
 
     http://hostname:23456?pathcontains=banana
 
-#### bodycontains
+#### by bodycontains
 Return the oldest request whose body contains 'store'
 
     http://hostname:23456?pathcontains=store
 
-#### contenttype
+#### by contenttype
 Return the oldest request whose content type header is 'text/plain'
 
     http://hostname:23456?contenttype=text%2Fplain
 
-#### method
+#### by method
 Return the oldest request whose method is 'PUT'
 
     http://hostname:23456?method=put
@@ -45,7 +49,7 @@ Return the oldest request whose method is 'PUT'
 
 NB : Query syntax ignores case.	
 
-## Install
+## Build and install
 
 Clone project
 
